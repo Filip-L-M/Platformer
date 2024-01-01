@@ -46,11 +46,12 @@ const player = new Player({
         gsap.to(overlay, {
           opacity: 1,
           onComplete: () => {
-            level++,
-              levels[level].init(),
-              gsap.to(overlay, {
-                opacity: 0,
-              });
+            level++, levels[level].init();
+            player.switchSprite("idleRight");
+            player.preventInput = false;
+            gsap.to(overlay, {
+              opacity: 0,
+            });
           },
         });
       },
@@ -66,6 +67,8 @@ let levels = {
       parsedCollisions = collisionsLevel1.parse2D();
       collisionBlocks = parsedCollisions.createObjectsFrom2D();
       player.collisionBlocks = collisionBlocks;
+
+      if (player.currentAnimation) player.currentAnimation.isActive = false;
 
       background = new Sprite({
         position: {
@@ -98,12 +101,47 @@ let levels = {
       player.position.x = 68;
       player.position.y = 115;
 
+      if (player.currentAnimation) player.currentAnimation.isActive = false;
+
       background = new Sprite({
         position: {
           x: 0,
           y: 0,
         },
         imageSrc: "./img/backgroundLevel2.png",
+      });
+      doors = [
+        new Sprite({
+          position: {
+            x: 772,
+            y: 336,
+          },
+          imageSrc: "./img/doorOpen.png",
+          frameRate: 5,
+          frameBuffer: 5,
+          loop: false,
+          autoplay: false,
+        }),
+      ];
+    },
+  },
+
+  3: {
+    init: () => {
+      parsedCollisions = collisionsLevel2.parse2D();
+      collisionBlocks = parsedCollisions.createObjectsFrom2D();
+      player.collisionBlocks = collisionBlocks;
+      player.position.x = 68;
+      player.position.y = 115;
+
+      if (player.currentAnimation) player.currentAnimation.isActive = false;
+
+      background = new Sprite({
+        position: {
+          x: 0,
+          y: 0,
+        },
+        imageSrc: "./img/backgroundLevel3.png",
       });
       doors = [
         new Sprite({
